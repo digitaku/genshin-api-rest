@@ -12,7 +12,7 @@ public class Ability {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String name;
 
     @Column(length = 250)

@@ -34,7 +34,7 @@ public class Characters {
     @Column(nullable = false)
     private String imgUrl;
 
-    // cada personagem
+    // cada personagem possui muitos talentos
     @OneToMany()
     @JoinColumn(name = "Characters_id")
     private Collection<Talent> talents;
@@ -43,10 +43,6 @@ public class Characters {
     @JoinColumn(name = "Characters_id")
     private Collection<Ability> abilities;
 
-    @OneToMany
-    @JoinColumn(name = "Characters_id")
-    private Collection<AbilityAscension> abilityAscensions;
-
     @OneToMany()
     @JoinColumn(name = "Characters_id")
     private Collection<Ascension> ascensions;
@@ -54,6 +50,13 @@ public class Characters {
     @OneToMany()
     @JoinColumn(name = "Characters_id")
     private Collection<Stats> stats;
+
+    // representa os items necessários para uma ascender as habilidades
+    @OneToMany
+    @JoinColumn(name = "Characters_id")
+    private Collection<AbilityAscension> abilityAscensions;
+
+    // construtor
 
     // Gets and Sets
     public Integer getId() {
@@ -160,14 +163,6 @@ public class Characters {
         this.abilities = abilities;
     }
 
-    public Collection<AbilityAscension> getAbilityAscensions() {
-        return abilityAscensions;
-    }
-
-    public void setAbilityAscensions(Collection<AbilityAscension> abilityAscensions) {
-        this.abilityAscensions = abilityAscensions;
-    }
-
     public Collection<Ascension> getAscensions() {
         return ascensions;
     }
@@ -182,6 +177,14 @@ public class Characters {
 
     public void setStats(Collection<Stats> stats) {
         this.stats = stats;
+    }
+
+    public Collection<AbilityAscension> getAbilityAscensions() {
+        return abilityAscensions;
+    }
+
+    public void setAbilityAscensions(Collection<AbilityAscension> abilityAscensions) {
+        this.abilityAscensions = abilityAscensions;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.atilas.genshin.model;
 
-import java.util.Collection;
-
 import javax.persistence.*;
 
 /**
