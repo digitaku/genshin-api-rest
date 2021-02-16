@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.atilas.genshin.model.Characters;
 
 @Repository
-public interface PersonagemInterface extends JpaRepository<Characters, Integer> {
+public interface CharactersInterface extends JpaRepository<Characters, Integer> {
 
 }
