@@ -1,8 +1,10 @@
 package com.atilas.genshin.service;
 
 import com.atilas.genshin.exception.BusinessException;
+import com.atilas.genshin.exception.CharactersNotFoundException;
 import com.atilas.genshin.exception.ItemBadRequest;
 import com.atilas.genshin.exception.ItemNotFoundException;
+import com.atilas.genshin.model.Characters;
 import com.atilas.genshin.model.Item;
 import com.atilas.genshin.repository.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -36,40 +38,44 @@ public class ItemService {
     }
 
     public Item listOne(Integer id) {
+        Optional<Item> item;
         try {
-            Optional<Item> item = itemRepository.findById(id);
-            if (item.isEmpty()) {
-                throw new ItemNotFoundException("Character by id " + id + "was not found");
-            }
-            return item.get();
+           item = itemRepository.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
+        if (item.isEmpty()) {
+            throw new ItemNotFoundException("Character by id:" + id + " was not found");
+        }
+        return item.get();
     }
 
-    public Item update(Integer id, Item item){
+    public Item update(Integer id, Item item) {
+        if (!item.getId().equals(id)) {
+            throw new ItemBadRequest("item id and url id don't Match");
+        }
+        Optional<Item> optional;
         try {
-            if (!item.getId().equals(id)) {
-                throw new ItemBadRequest(id + " And " + item.getId() + "Don't Match");
-            }
-            Optional<Item> optional = itemRepository.findById(id);
-            if (optional.isEmpty()) {
-                throw new ItemNotFoundException("Character by id " + id + "was not found");
-            }
-            return itemRepository.save(item);
+            optional = itemRepository.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
+        if (optional.isEmpty()) {
+            throw new ItemNotFoundException("Character by id:" + id + " was not found");
+        }
+        return itemRepository.save(item);
     }
-    public void delete(Integer id){
+
+    public void delete(Integer id) {
+        Optional<Item> optional;
         try {
-            Optional<Item> item = itemRepository.findById(id);
-            if (item.isEmpty()) {
-                throw new ItemNotFoundException("Character by id " + id + "was not found");
-            }
-            itemRepository.deleteById(id);
+            optional = itemRepository.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
+        if (optional.isEmpty()) {
+            throw new ItemNotFoundException("Item by id:" + id + " was not found");
+        }
+        itemRepository.deleteById(id);
     }
 }

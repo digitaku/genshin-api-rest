@@ -3,6 +3,7 @@ package com.atilas.genshin.service;
 import com.atilas.genshin.exception.BusinessException;
 import com.atilas.genshin.exception.CharactersBadRequest;
 import com.atilas.genshin.exception.CharactersNotFoundException;
+import com.atilas.genshin.exception.ItemNotFoundException;
 import com.atilas.genshin.model.Characters;
 import com.atilas.genshin.repository.CharactersInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,44 +39,48 @@ public class CharactersService implements Serializable {
     }
 
     public Characters listOne(Integer id) {
+        Optional<Characters> characters;
         try {
-            Optional<Characters> characters = charactersInterface.findById(id);
-            if (characters.isEmpty()) {
-                throw new CharactersNotFoundException("Character by id " + id + "was not found");
-            }
-            return characters.get();
+            characters = charactersInterface.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
+        if (characters.isEmpty()) {
+            throw new CharactersNotFoundException("Character by id " + id + "was not found");
+        }
+        return characters.get();
     }
 
     public Characters update(Integer id, Characters characters) {
-        //not found
+
+        if (!characters.getId().equals(id)) {
+            throw new CharactersBadRequest(id + " And " + characters.getId() + "Don't Match");
+        }
+        Optional<Characters> optional;
         try {
-            if (!characters.getId().equals(id)) {
-                throw new CharactersBadRequest(id + " And " + characters.getId() + "Don't Match");
-            }
-            Optional<Characters> optional = charactersInterface.findById(id);
-            if (optional.isEmpty()) {
-                throw new CharactersNotFoundException("Character by id " + id + "was not found");
-            }
-            return charactersInterface.save(characters);
+            optional = charactersInterface.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
+        //not found
+        if (optional.isEmpty()) {
+            throw new CharactersNotFoundException("Character by id " + id + "was not found");
+        }
+        return charactersInterface.save(characters);
     }
 
     public void delete(Integer id) {
         //not found
+        Optional<Characters> optional;
         try {
-            Optional<Characters> optional = charactersInterface.findById(id);
-            if (optional.isEmpty()) {
-                throw new CharactersNotFoundException("Character by id " + id + "was not found");
-            }
-            charactersInterface.deleteById(id);
+            optional = charactersInterface.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
+        if (optional.isEmpty()) {
+            throw new CharactersNotFoundException("Character by id " + id + "was not found");
+        }
+        charactersInterface.deleteById(id);
     }
 
 }

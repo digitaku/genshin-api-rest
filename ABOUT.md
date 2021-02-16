@@ -19,6 +19,7 @@ interface para services ?
 jwt
 
 
+
 ## tabelas
 
 passive talents and ability status

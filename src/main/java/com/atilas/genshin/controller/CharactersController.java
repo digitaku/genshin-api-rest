@@ -39,11 +39,11 @@ public class CharactersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Characters> getOneCharacter(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> getOneCharacter(@PathVariable("id") Integer id) {
         try {
             return new ResponseEntity<>(charactersService.listOne(id), HttpStatus.OK);
         } catch (CharactersNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (BusinessException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -64,21 +64,21 @@ public class CharactersController {
         try {
             return new ResponseEntity<>(charactersService.update(id, entity), HttpStatus.OK);
         } catch (CharactersNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (CharactersBadRequest e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (BusinessException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteCharacter(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> deleteCharacter(@PathVariable("id") Integer id) {
         try {
             charactersService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (CharactersNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (BusinessException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

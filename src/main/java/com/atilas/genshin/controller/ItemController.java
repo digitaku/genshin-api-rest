@@ -1,8 +1,6 @@
 package com.atilas.genshin.controller;
 
-import com.atilas.genshin.exception.BusinessException;
-import com.atilas.genshin.exception.CharactersBadRequest;
-import com.atilas.genshin.exception.CharactersNotFoundException;
+import com.atilas.genshin.exception.*;
 import com.atilas.genshin.model.Item;
 import com.atilas.genshin.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +33,11 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getOneCharacter(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> getOneCharacter(@PathVariable("id") Integer id) {
         try {
             return new ResponseEntity<>(itemService.listOne(id), HttpStatus.OK);
-        } catch (CharactersNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (ItemNotFoundException e) {
+            return new ResponseEntity<>( e.getMessage(),HttpStatus.NOT_FOUND);
         } catch (BusinessException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -59,12 +57,12 @@ public class ItemController {
     public ResponseEntity<?> editCharacter(@PathVariable Integer id, @RequestBody Item item) {
         try {
             return new ResponseEntity<>(itemService.update(id, item), HttpStatus.OK);
-        } catch (CharactersNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (CharactersBadRequest e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (ItemNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        } catch (ItemBadRequest e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,10 +71,10 @@ public class ItemController {
         try {
             itemService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (CharactersNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (ItemNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
