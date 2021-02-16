@@ -12,6 +12,13 @@ inverseJoinColumns = @JoinColumn(name = "tag_id")
 @ManyToMany(mappedBy = "tags")
 tags e nome do atributo na outra classe
 
+adicionar imagem em alguns models
+busca do banco por nome
+validação
+interface para services ?
+jwt
+
+
 ## tabelas
 
 passive talents and ability status

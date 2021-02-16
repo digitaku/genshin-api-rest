@@ -1,86 +1,84 @@
 package com.atilas.genshin.controller;
 
+import com.atilas.genshin.exception.BusinessException;
+import com.atilas.genshin.exception.CharactersBadRequest;
+import com.atilas.genshin.exception.CharactersNotFoundException;
 import com.atilas.genshin.model.Item;
-import com.atilas.genshin.repository.ItemRepository;
+import com.atilas.genshin.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/item")
 public class ItemController {
 
     @Autowired
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
-    public ItemController(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
     }
+
 
     @GetMapping
     public ResponseEntity<List<Item>> list() {
         try {
-            return new ResponseEntity<>(itemRepository.findAll(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(itemService.listAll(), HttpStatus.OK);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getOneItem(@PathVariable("id") Integer id) {
+    public ResponseEntity<Item> getOneCharacter(@PathVariable("id") Integer id) {
         try {
-            Optional<Item> item = itemRepository.findById(id);
-            if (item.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(item.get(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(itemService.listOne(id), HttpStatus.OK);
+        } catch (CharactersNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> createItem(@RequestBody Item item) {
+    public ResponseEntity<?> newCharacter(@RequestBody Item item) {
         try {
-            item.setId(itemRepository.findAll().size());
-            itemRepository.save(item);
-            return new ResponseEntity<>(item, HttpStatus.CREATED);
-        } catch (Exception e) {
+            return new ResponseEntity<>(itemService.add(item), HttpStatus.CREATED);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> editCharacter(@PathVariable Integer id, @RequestBody Item item) {
+        try {
+            return new ResponseEntity<>(itemService.update(id, item), HttpStatus.OK);
+        } catch (CharactersNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (CharactersBadRequest e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (BusinessException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Item> editItem(@PathVariable("id") Integer id, @RequestBody Item item) {
-        try {
-            if (!itemRepository.existsById(id)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            item.setId(id);
-            itemRepository.save(item);
-            return new ResponseEntity<>(item, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<ResponseStatus> delete(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteCharacter(@PathVariable("id") Integer id) {
         try {
-            if (itemRepository.existsById(id)) {
-                itemRepository.deleteById(id);
-                return new ResponseEntity<>(HttpStatus.ACCEPTED);
-            }
-
+            itemService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (CharactersNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

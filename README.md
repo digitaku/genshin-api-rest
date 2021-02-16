@@ -1,3 +1,32 @@
 # Genshin API
 
 Api rest utilizando SPRING, JAVA 11, JPA como ORM e MYSQL como banco de dados
+## Como Executar ???
+- Necessita do banco `MySQL` esta rodando
+- Modifica o aquivo `application.properties` com a url, username, password do banco,
+  mudar tambem `spring.jpa.hibernate.ddl-auto` para `create`
+- Entrar na pasta do projeto  e rodar o comando `mvn spring-boot:run`
+- Executar o arquivo `add-characteres.sql` no banco de dados (esse arquivo possui o conteudo do banco de dados)
+
+## Rotas da Aplicação
+### Rotas publicas (apenas GET)
+
+- `api/characters`
+- `api/characters/{id}` id do personagem
+- `api/characters/{nome}` nome do personagem
+- `api/item`
+- `api/item/{id}` id do item
+- `api/item/{name}` nome do item
+
+
+### Rotas com autenticação(necessitam um token)
+
+#### POST
+
+- `api/characters`
+- `api/item`
+
+#### PUT & DELETE
+
+- `api/characters/{id}`
+- `api/item/{id}`
