@@ -1,2 +1,12 @@
-package com.atilas.genshin.repository;public class UserRepository {
+package com.atilas.genshin.repository;
+
+import com.atilas.genshin.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findById(String id);
 }

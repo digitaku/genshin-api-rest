@@ -1,38 +1,41 @@
-# Unir Tabelas
+# Unir Tabelas many to many
 
-@ManyToMany(cascade = {
-CascadeType.PERSIST,
-CascadeType.MERGE
-})
-@JoinTable(name = "post_tag",
-joinColumns = @JoinColumn(name = "post_id"),
-inverseJoinColumns = @JoinColumn(name = "tag_id")
+@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+@JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "
+tag_id")
 )
 
 @ManyToMany(mappedBy = "tags")
 tags e nome do atributo na outra classe
 
-adicionar imagem em alguns models
-busca do banco por nome
-validação
-interface para services ?
-jwt
 
+## models(falta)
 
+- passive talents and ability status
+- adicionar imagem em alguns models
 
-## tabelas
+## dto
 
-passive talents and ability status
+- todos -users
 
-## rotas
+## rotas(falta)
 
-- personagem
-- item
-- get outras
-- update
+- todas -personagem,item
+- busca do banco por nome
 
 ## repositories
+- interface para services ?
+- busca do banco por nome
+
+## services
 
 ## secure
 
+- jwt
+- validação
+- autorização
+
 ## exceptions
+
+- Forbidden
+- Unauthorized

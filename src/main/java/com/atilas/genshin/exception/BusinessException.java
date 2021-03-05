@@ -1,7 +1,12 @@
 package com.atilas.genshin.exception;
 
-public class BusinessException extends RuntimeException{
-    public BusinessException(String message){
+public class BusinessException extends RuntimeException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    public BusinessException(String message) {
         super(message);
     }
 }

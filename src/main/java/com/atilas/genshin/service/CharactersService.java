@@ -14,6 +14,10 @@ import java.util.Optional;
 
 @Service
 public class CharactersService implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8124215363258214266L;
     @Autowired
     private final CharactersInterface charactersInterface;
 

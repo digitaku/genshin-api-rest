@@ -5,7 +5,7 @@ Api rest utilizando SPRING, JAVA 11, JPA como ORM e MYSQL como banco de dados
 - Necessita do banco `MySQL` esta rodando
 - Modifica o aquivo `application.properties` com a url, username, password do banco,
   mudar tambem `spring.jpa.hibernate.ddl-auto` para `create`
-- Entrar na pasta do projeto  e rodar o comando `mvn spring-boot:run`
+- Entrar na pasta do projeto  e rodar o comando `mvnw.cmd spring-boot:run`(precisa do java 11, pode ocorrer erros por conta do java_home no arquivo mvnw.cmd, usar set JAVA_HOME=path_do_jdk_java)
 - Executar o arquivo `add-characteres.sql` no banco de dados (esse arquivo possui o conteudo do banco de dados)
 
 ## Rotas da Aplicação
