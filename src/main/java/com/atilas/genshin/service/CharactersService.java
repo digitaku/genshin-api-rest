@@ -3,7 +3,6 @@ package com.atilas.genshin.service;
 import com.atilas.genshin.exception.BusinessException;
 import com.atilas.genshin.exception.CharactersBadRequest;
 import com.atilas.genshin.exception.CharactersNotFoundException;
-import com.atilas.genshin.exception.ItemNotFoundException;
 import com.atilas.genshin.model.Characters;
 import com.atilas.genshin.repository.CharactersInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +61,7 @@ public class CharactersService implements Serializable {
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
-        //not found
+        // not found
         if (optional.isEmpty()) {
             throw new CharactersNotFoundException("Character by id " + id + "was not found");
         }
@@ -70,7 +69,7 @@ public class CharactersService implements Serializable {
     }
 
     public void delete(Integer id) {
-        //not found
+        // not found
         Optional<Characters> optional;
         try {
             optional = charactersInterface.findById(id);

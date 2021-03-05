@@ -1,10 +1,8 @@
 package com.atilas.genshin.service;
 
 import com.atilas.genshin.exception.BusinessException;
-import com.atilas.genshin.exception.CharactersNotFoundException;
 import com.atilas.genshin.exception.ItemBadRequest;
 import com.atilas.genshin.exception.ItemNotFoundException;
-import com.atilas.genshin.model.Characters;
 import com.atilas.genshin.model.Item;
 import com.atilas.genshin.repository.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -40,7 +38,7 @@ public class ItemService {
     public Item listOne(Integer id) {
         Optional<Item> item;
         try {
-           item = itemRepository.findById(id);
+            item = itemRepository.findById(id);
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
