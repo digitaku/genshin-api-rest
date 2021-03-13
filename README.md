@@ -6,11 +6,12 @@ Api rest utilizando SPRING, JAVA 11, JPA como ORM e MYSQL como banco de dados
 - Modifica o aquivo `application.properties` com a url, username, password do banco,
   mudar tambem `spring.jpa.hibernate.ddl-auto` para `create`
 - Entrar na pasta do projeto  e rodar o comando `mvnw.cmd spring-boot:run`(precisa do java 11, pode ocorrer erros por conta do java_home no arquivo mvnw.cmd, usar set JAVA_HOME=path_do_jdk_java)
-- Executar o arquivo `add-characteres.sql` no banco de dados (esse arquivo possui o conteudo do banco de dados)
+- Executar o arquivo `add-characteres.sql` no banco de dados (esse arquivo possui o conteúdo do banco de dados)
 
 ## Rotas da Aplicação
 ### Rotas publicas (apenas GET)
-
+- `api/signup` necessita username e password sendo enviado como json para cria um novo usuário, recebe um token como resposta
+- `api/login` necessita username e password sendo enviado como json, recebem um token como resposta
 - `api/characters`
 - `api/characters/{id}` id do personagem
 - `api/characters/{nome}` nome do personagem
